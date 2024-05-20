@@ -70,7 +70,7 @@ main {
     display: inline;
 } */
 
-.cella.easy{
+.cella.hard{
     width: calc(100% / 7);
 }
 
@@ -78,6 +78,6 @@ main {
     width: calc(100% / 9);
 }
 
-.cella.hard{
+.cella.easy{
     width: calc(100% / 10);
 }
