@@ -46,6 +46,9 @@ function generaGriglia(punteggio, numberOfBombs) {
         // definisco il contenuto
         if (bombsArray.includes(i)) {
             article.classList.add("bomb");
+
+            let span = document.createElement("span");
+            article.appendChild(span);
         } else {
             article.innerHTML = `<p>${i}</p>`
             article.classList.add("safe");
@@ -56,12 +59,13 @@ function generaGriglia(punteggio, numberOfBombs) {
 
         article.addEventListener('click', function(){
             // devo verificare che non sia gia cliccata
-            if (article.classList.contains("active") == 0) {
+            if (article.classList.contains("unclickable") == 0) {
                 article.classList.add("active");
+                article.classList.add("unclickable");
 
                 //controllo se e' una bomba
                 if (article.classList.contains("bomb")) {
-                    sconfitta();
+                    sconfitta(numberOfCell, bombsArray);
                     return
                 } 
 
@@ -69,11 +73,9 @@ function generaGriglia(punteggio, numberOfBombs) {
                 punteggio += 1;
 
                 if ((punteggio + numberOfBombs) == numberOfCell) {
-                    vittoria();
+                    vittoria(numberOfCell);
                     return
                 }
-
-                console.log(punteggio);
             }
         });
     }
@@ -112,10 +114,33 @@ function generaBombe(cellNumber, bombsNumber) {
     return array;
 }
 
-function sconfitta() {
-    console.log("hai perso");
+function sconfitta(int, array) {
+    // annullo ogni click
+    eliminaClicks(int);
+
+    // visualizzo ogni bomba
+    let cells = document.getElementsByClassName("cella")
+    for (let i = 0; i < array.length; i++) {
+        cells[array[i] - 1].classList.add("active")
+    }
 }
 
-function vittoria() {
-    console.log("hai vinto")
+function vittoria(int) {
+    // annullo ogni click
+    eliminaClicks(int);
+}
+
+/**
+ * Add a class to all the "cella" element to make them unlickable
+ * 
+ * @param {*} int 
+ */
+function eliminaClicks(int){
+    // prendo una lista di tutti gli elementi "cella"
+    let cells = document.getElementsByClassName("cella")
+
+    for (let i = 0; i < cells.length; i++) {
+        // aggiungo classe unlcickable a tutti gli elementi
+        cells[i].classList.add("unclickable")
+    }
 }
