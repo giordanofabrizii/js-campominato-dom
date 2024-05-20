@@ -7,16 +7,13 @@ playButton.addEventListener('click', function(){
 
     // reset del punteggio
     let punteggio = 0;
-
-    //HTML element to vizualize the score
-    let scoreEl = document.getElementById("score");
-    scoreEl.innerHTML = punteggio;
+    let alredychecked = [];
 
     // definisco numero di bombe
     const numberOfBombs = 16;
 
     // genero la griglia
-    generaGriglia(punteggio, numberOfBombs, scoreEl);
+    generaGriglia(punteggio, numberOfBombs, alredychecked);
 });
 
 /**
@@ -25,8 +22,9 @@ playButton.addEventListener('click', function(){
  * @param {*} punteggio 
  * @param {*} numberOfBombs 
  * @param {*} el 
+ * @param {*} list
  */
-function generaGriglia(punteggio, numberOfBombs, el) {
+function generaGriglia(punteggio, numberOfBombs, list) {
 
     // definisco difficolta
     let difficultyChoiceEl = document.getElementById("difficulty-choice")
@@ -83,18 +81,20 @@ function generaGriglia(punteggio, numberOfBombs, el) {
 
                 // controllo se era l'ultima casella
                 punteggio += 1;
-                el.innerHTML = punteggio;
 
                 if ((punteggio + numberOfBombs) == numberOfCell) {
                     vittoria();
                     return
                 }
+
+                // controllo cosa posso sbloccare
+                sbloccaAdiacenti(cells, i, numberOfCell, list);
             }
         });
     }
 
     // prendo una lista di tutti gli elementi "cella"
-    let cells = document.getElementsByClassName("cella")
+    let cells = document.getElementsByClassName("cella");
 
     // article.innerHTML = `<p>${i}</p>`
     for (let i = 0; i < numberOfCell; i++) {
@@ -136,6 +136,7 @@ function generaBombe(cellNumber, bombsNumber) {
 }
 
 /**
+ * It return a int that indicates the number of the bombs in the adiacent cells
  * 
  * @param {*} int the number of the cell that we are checking
  * @param {*} num the number of cells
@@ -152,10 +153,7 @@ function assegnaNumero(int, num, list) {
             var rowChecked = row + i;
             var colChecked = col + j;
 
-            console.log(rowChecked,colChecked)
-
             var indexOfChecked = (rowChecked * Math.sqrt(num)) + colChecked; // return a correct index from two coordinates
-
 
             if (!(rowChecked < 0 || rowChecked >= Math.sqrt(num) || colChecked < 0 || colChecked >= Math.sqrt(num))) {
                 if (list[indexOfChecked].classList.contains("bomb")) {
@@ -165,10 +163,45 @@ function assegnaNumero(int, num, list) {
         }
     }
 
-
-
-    return bombCounter;
+    if (bombCounter === 0) {
+        return '';
+    } else {
+        return bombCounter;
+    }
 }
+
+function sbloccaAdiacenti(list, int, num, checked) {
+    let indexOfElement = int - 1;
+
+    let row = Math.floor(indexOfElement / Math.sqrt(num)); // in a grid it rapresent the row number of the element
+    let col = indexOfElement % Math.sqrt(num) ; // in a grid it rapresent the col number of the element
+
+    for (let i = -1; i <= 1; i++){
+        for (let j = -1; j <= 1; j++) {
+            // open this cell
+            var rowChecked = row + i;
+            var colChecked = col + j;
+
+            var indexOfChecked = (rowChecked * Math.sqrt(num)) + colChecked;
+
+            elemToChecked = list[indexOfChecked];
+
+            if (!(rowChecked < 0 || rowChecked >= Math.sqrt(num) || colChecked < 0 || colChecked >= Math.sqrt(num) || checked.includes(elemToChecked))) {
+                if (elemToChecked.innerHTML === '') {
+                    elemToChecked.classList.add('active', 'unclickable');
+                    console.log(elemToChecked);
+                    checked.push(elemToChecked);
+                    sbloccaAdiacenti(list, indexOfChecked + 1, num, checked);
+                } else if (isNaN(elemToChecked.innerHTML) != 1) {
+                    elemToChecked.classList.add('active', 'unclickable');
+                    console.log(elemToChecked);
+                    checked.push(elemToChecked);
+                }
+            }
+        }
+    }
+}
+
 
 function sconfitta(array) {
     // annullo ogni click
