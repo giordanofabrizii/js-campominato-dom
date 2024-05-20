@@ -9,8 +9,14 @@ Aggiungere una select accanto al bottone di generazione, che fornisca una scelta
 
 
 <!-- ! SPIEGAZIONE SCRIPT -->
-Al bottone "play" assegno una chiamata di funzione che prende in argomento il numero di caselle da generare
+Al bottone "play" assegno una chiamata di funzione che prende in argomento il numero di caselle da generare definito dalla difficolta
 ciclo da 1 al numero + 1 per generare ogni quadrato
     aggiungo come contenuto un p che abbia come contenuto l'indice
     aggiungo l'event listner al click
         aggiungere una classe che rilevi il contenuto e cambi il background
+        inserire un controllo per vedere se era gia cliccata
+        se e' una cella "buona": punteggio += 1
+        se e' una cella bomba: fine gioco
+    
+    genero 16 bombe casuali attraverso una funzione randomica e lo assegno a determinate caselle
+
