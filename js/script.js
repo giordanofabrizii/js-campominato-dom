@@ -97,7 +97,7 @@ function generaGriglia(punteggio, numberOfBombs, el) {
     let cells = document.getElementsByClassName("cella")
 
     // article.innerHTML = `<p>${i}</p>`
-    for (let i = 1; i < numberOfCell; i++) {
+    for (let i = 0; i < numberOfCell; i++) {
         if (cells[i].classList.contains("safe")) {
             cells[i].innerHTML = assegnaNumero(i, numberOfCell, cells).toString();
         }
@@ -164,6 +164,8 @@ function assegnaNumero(int, num, list) {
             }
         }
     }
+
+
 
     return bombCounter;
 }
