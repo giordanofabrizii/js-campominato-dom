@@ -81,3 +81,9 @@ main {
 .cella.easy{
     width: calc(100% / 10);
 }
+
+.cella.bomb {
+    background-image: url(../img/bomb.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}

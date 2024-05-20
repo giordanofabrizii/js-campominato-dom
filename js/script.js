@@ -5,11 +5,14 @@ playButton.addEventListener('click', function(){
     // prima svuoto il container
     campoContainerEl.innerHTML = ''
 
+    // reset del punteggio
+    let punteggio = 0
+    
     // genero la griglia
-    generaGriglia();
+    generaGriglia(punteggio);
 });
 
-function generaGriglia() {
+function generaGriglia(punteggio) {
 
     // definisco difficolta
     let difficultyChoiceEl = document.getElementById("difficulty-choice")
@@ -39,15 +42,24 @@ function generaGriglia() {
 
         // definisco il contenuto
         if (bombsArray.includes(i)) {
-            article.innerHTML = `<p>X</p>`
+            article.classList.add("bomb");
         } else {
             article.innerHTML = `<p>${i}</p>`
+            article.classList.add("safe");
         }
         article.classList.add("cella" , `${className}`);
         campoContainerEl.appendChild(article);
 
         article.addEventListener('click', function(){
-            article.classList.toggle("active");
+            // devo verificare che non sia gia cliccata
+            if (article.classList.contains("active") == 0) {
+                article.classList.add("active");
+
+                //controllo se e' una bomba
+
+                punteggio += 1;
+                console.log(punteggio);
+            }
         });
     }
 
