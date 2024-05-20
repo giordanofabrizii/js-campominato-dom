@@ -61,9 +61,10 @@ function generaGriglia(punteggio, numberOfBombs, el) {
             let span = document.createElement("span");
             article.appendChild(span);
         } else {
-            article.innerHTML = `<p>${i}</p>`
-            article.classList.add("safe");
+        article.classList.add("safe");
         }
+
+        //  > IL NUMERO LO DEVO GENERARE DOPO AVER MESSO TUTTE LE BOMBE
 
         article.classList.add("cella" , `${className}`);
         campoContainerEl.appendChild(article);
@@ -76,7 +77,7 @@ function generaGriglia(punteggio, numberOfBombs, el) {
 
                 //controllo se e' una bomba
                 if (article.classList.contains("bomb")) {
-                    sconfitta(numberOfCell, bombsArray);
+                    sconfitta(bombsArray);
                     return
                 } 
 
@@ -85,11 +86,21 @@ function generaGriglia(punteggio, numberOfBombs, el) {
                 el.innerHTML = punteggio;
 
                 if ((punteggio + numberOfBombs) == numberOfCell) {
-                    vittoria(numberOfCell);
+                    vittoria();
                     return
                 }
             }
         });
+    }
+
+    // prendo una lista di tutti gli elementi "cella"
+    let cells = document.getElementsByClassName("cella")
+
+    // article.innerHTML = `<p>${i}</p>`
+    for (let i = 1; i < numberOfCell; i++) {
+        if (cells[i].classList.contains("safe")) {
+            cells[i].innerHTML = assegnaNumero(i, numberOfCell, cells).toString();
+        }
     }
 }
 
@@ -124,9 +135,42 @@ function generaBombe(cellNumber, bombsNumber) {
     return array;
 }
 
-function sconfitta(int, array) {
+/**
+ * 
+ * @param {*} int the number of the cell that we are checking
+ * @param {*} num the number of cells
+ * @param {*} list the list of cells
+ */
+function assegnaNumero(int, num, list) {
+    let row = Math.floor(int / Math.sqrt(num)); // in a grid it rapresent the row number of the element
+    let col = int % Math.sqrt(num);// in a grid it rapresent the col number of the element
+
+    let bombCounter = 0;
+
+    for (let i = -1; i <= 1; i++){
+        for (let j = -1; j <= 1; j++) {
+            var rowChecked = row + i;
+            var colChecked = col + j;
+
+            console.log(rowChecked,colChecked)
+
+            var indexOfChecked = (rowChecked * Math.sqrt(num)) + colChecked; // return a correct index from two coordinates
+
+
+            if (!(rowChecked < 0 || rowChecked >= Math.sqrt(num) || colChecked < 0 || colChecked >= Math.sqrt(num))) {
+                if (list[indexOfChecked].classList.contains("bomb")) {
+                    bombCounter += 1
+                }
+            }
+        }
+    }
+
+    return bombCounter;
+}
+
+function sconfitta(array) {
     // annullo ogni click
-    eliminaClicks(int);
+    eliminaClicks();
 
     // visualizzo ogni bomba
     let cells = document.getElementsByClassName("cella")
@@ -135,9 +179,9 @@ function sconfitta(int, array) {
     }
 }
 
-function vittoria(int) {
+function vittoria() {
     // annullo ogni click
-    eliminaClicks(int);
+    eliminaClicks();
 }
 
 /**
@@ -145,7 +189,7 @@ function vittoria(int) {
  * 
  * @param {*} int 
  */
-function eliminaClicks(int){
+function eliminaClicks(){
     // prendo una lista di tutti gli elementi "cella"
     let cells = document.getElementsByClassName("cella")
 
