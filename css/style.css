@@ -82,7 +82,7 @@ main {
     width: calc(100% / 10);
 }
 
-.cella.bomb > span{
+.cella.bomb > span.bomb-cell{
     height: 100%;
     width: 100%;
     background-image: url(../img/bomb.png);

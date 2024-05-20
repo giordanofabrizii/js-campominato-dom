@@ -52,20 +52,24 @@ function generaGriglia(punteggio, numberOfBombs, list) {
     for (let i = 1; i < numberOfCell + 1; i++) {
         let article = document.createElement("article");
 
+        let span = document.createElement("span");
+        article.appendChild(span);
+
         // definisco il contenuto
         if (bombsArray.includes(i)) {
             article.classList.add("bomb");
-
-            let span = document.createElement("span");
-            article.appendChild(span);
+            span.classList = "bomb-cell"
         } else {
-        article.classList.add("safe");
+            article.classList.add("safe");
+            span.classList = "safe-cell"
         }
 
         //  > IL NUMERO LO DEVO GENERARE DOPO AVER MESSO TUTTE LE BOMBE
 
         article.classList.add("cella" , `${className}`);
         campoContainerEl.appendChild(article);
+
+
 
         article.addEventListener('click', function(){
             // devo verificare che non sia gia cliccata
@@ -96,10 +100,10 @@ function generaGriglia(punteggio, numberOfBombs, list) {
     // prendo una lista di tutti gli elementi "cella"
     let cells = document.getElementsByClassName("cella");
 
-    // article.innerHTML = `<p>${i}</p>`
     for (let i = 0; i < numberOfCell; i++) {
         if (cells[i].classList.contains("safe")) {
-            cells[i].innerHTML = assegnaNumero(i, numberOfCell, cells).toString();
+            num = assegnaNumero(i, numberOfCell, cells).toString();
+            cells[i].childNodes[0].innerHTML = `<p>${num}</p>`;
         }
     }
 }
@@ -163,11 +167,7 @@ function assegnaNumero(int, num, list) {
         }
     }
 
-    if (bombCounter === 0) {
-        return '';
-    } else {
         return bombCounter;
-    }
 }
 
 function sbloccaAdiacenti(list, int, num, checked) {
@@ -187,12 +187,12 @@ function sbloccaAdiacenti(list, int, num, checked) {
             elemToChecked = list[indexOfChecked];
 
             if (!(rowChecked < 0 || rowChecked >= Math.sqrt(num) || colChecked < 0 || colChecked >= Math.sqrt(num) || checked.includes(elemToChecked))) {
-                if (elemToChecked.innerHTML === '') {
+                if (elemToChecked.childNodes[0].childNodes[0].innerHTML == 0) {
                     elemToChecked.classList.add('active', 'unclickable');
                     console.log(elemToChecked);
                     checked.push(elemToChecked);
                     sbloccaAdiacenti(list, indexOfChecked + 1, num, checked);
-                } else if (isNaN(elemToChecked.innerHTML) != 1) {
+                } else if ([1,2,3,4,5,6,7,8].includes(elemToChecked.childNodes[0].childNodes[0].innerHTML) == 0) {
                     elemToChecked.classList.add('active', 'unclickable');
                     console.log(elemToChecked);
                     checked.push(elemToChecked);
