@@ -30,16 +30,58 @@ function generaGriglia() {
             var className = 'easy';
     }
 
+    // genero degli interi per definire le bombe
+    let bombsArray = generaBombe(numberOfCell);
+
     // genero n caselle
     for (let i = 1; i < numberOfCell + 1; i++) {
         let article = document.createElement("article");
-        article.innerHTML = `<p>${i}</p>`
+
+        // definisco il contenuto
+        if (bombsArray.includes(i)) {
+            article.innerHTML = `<p>X</p>`
+        } else {
+            article.innerHTML = `<p>${i}</p>`
+        }
         article.classList.add("cella" , `${className}`);
         campoContainerEl.appendChild(article);
 
         article.addEventListener('click', function(){
             article.classList.toggle("active");
-            console.log(this.innerText);
         });
     }
+
+    
+}
+
+/**
+ * Generate a random number between the min an the max value given, included
+ * 
+ * @param {} min 
+ * @param {} max 
+ * @returns 
+ */
+function generaRandom(min, max) {
+    num = Math.floor(Math.random() * ((max + 1) - min)) + min;
+    return num;
+}
+
+/**
+ * When given an int, returns an array of a determinated length of numbers included betweween 1 and the int
+ * 
+ * @param {} int max index of the bomb
+ * @returns array
+ */
+function generaBombe(cell) {
+    let array = [];
+    const numberOfBombs = 16;
+    for (let i = 0; i < numberOfBombs; i++) {
+        var newBomb = generaRandom(1,cell);
+        while (array.includes(newBomb)) {
+            newBomb = generaRandom(1,cell);
+        }
+        array.push(newBomb);
+    }
+
+    return array;
 }
