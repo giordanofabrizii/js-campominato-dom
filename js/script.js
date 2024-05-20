@@ -16,6 +16,8 @@ playButton.addEventListener('click', function(){
 });
 
 function generaGriglia(punteggio, numberOfBombs) {
+    //HTML element to vizualize the score
+    let scoreEl = document.getElementById("score");
 
     // definisco difficolta
     let difficultyChoiceEl = document.getElementById("difficulty-choice")
@@ -71,6 +73,7 @@ function generaGriglia(punteggio, numberOfBombs) {
 
                 // controllo se era l'ultima casella
                 punteggio += 1;
+                scoreEl.innerHTML = punteggio;
 
                 if ((punteggio + numberOfBombs) == numberOfCell) {
                     vittoria(numberOfCell);
