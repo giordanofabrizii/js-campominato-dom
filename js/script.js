@@ -7,12 +7,15 @@ playButton.addEventListener('click', function(){
 
     // reset del punteggio
     let punteggio = 0
-    
+
+    // definisco numero di bombe
+    const numberOfBombs = 16;
+
     // genero la griglia
-    generaGriglia(punteggio);
+    generaGriglia(punteggio, numberOfBombs);
 });
 
-function generaGriglia(punteggio) {
+function generaGriglia(punteggio, numberOfBombs) {
 
     // definisco difficolta
     let difficultyChoiceEl = document.getElementById("difficulty-choice")
@@ -34,7 +37,7 @@ function generaGriglia(punteggio) {
     }
 
     // genero degli interi per definire le bombe
-    let bombsArray = generaBombe(numberOfCell);
+    let bombsArray = generaBombe(numberOfCell, numberOfBombs);
 
     // genero n caselle
     for (let i = 1; i < numberOfCell + 1; i++) {
@@ -47,6 +50,7 @@ function generaGriglia(punteggio) {
             article.innerHTML = `<p>${i}</p>`
             article.classList.add("safe");
         }
+
         article.classList.add("cella" , `${className}`);
         campoContainerEl.appendChild(article);
 
@@ -56,8 +60,19 @@ function generaGriglia(punteggio) {
                 article.classList.add("active");
 
                 //controllo se e' una bomba
+                if (article.classList.contains("bomb")) {
+                    sconfitta();
+                    return
+                } 
 
+                // controllo se era l'ultima casella
                 punteggio += 1;
+
+                if ((punteggio + numberOfBombs) == numberOfCell) {
+                    vittoria();
+                    return
+                }
+
                 console.log(punteggio);
             }
         });
@@ -84,16 +99,23 @@ function generaRandom(min, max) {
  * @param {} int max index of the bomb
  * @returns array
  */
-function generaBombe(cell) {
+function generaBombe(cellNumber, bombsNumber) {
     let array = [];
-    const numberOfBombs = 16;
-    for (let i = 0; i < numberOfBombs; i++) {
-        var newBomb = generaRandom(1,cell);
+    for (let i = 0; i < bombsNumber; i++) {
+        var newBomb = generaRandom(1,cellNumber);
         while (array.includes(newBomb)) {
-            newBomb = generaRandom(1,cell);
+            newBomb = generaRandom(1,cellNumber);
         }
         array.push(newBomb);
     }
 
     return array;
+}
+
+function sconfitta() {
+    console.log("hai perso");
+}
+
+function vittoria() {
+    console.log("hai vinto")
 }
