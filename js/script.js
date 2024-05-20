@@ -6,18 +6,20 @@ playButton.addEventListener('click', function(){
     campoContainerEl.innerHTML = ''
 
     // reset del punteggio
-    let punteggio = 0
+    let punteggio = 0;
+
+    //HTML element to vizualize the score
+    let scoreEl = document.getElementById("score");
+    scoreEl.innerHTML = punteggio;
 
     // definisco numero di bombe
     const numberOfBombs = 16;
 
     // genero la griglia
-    generaGriglia(punteggio, numberOfBombs);
+    generaGriglia(punteggio, numberOfBombs, scoreEl);
 });
 
-function generaGriglia(punteggio, numberOfBombs) {
-    //HTML element to vizualize the score
-    let scoreEl = document.getElementById("score");
+function generaGriglia(punteggio, numberOfBombs, el) {
 
     // definisco difficolta
     let difficultyChoiceEl = document.getElementById("difficulty-choice")
@@ -73,7 +75,7 @@ function generaGriglia(punteggio, numberOfBombs) {
 
                 // controllo se era l'ultima casella
                 punteggio += 1;
-                scoreEl.innerHTML = punteggio;
+                el.innerHTML = punteggio;
 
                 if ((punteggio + numberOfBombs) == numberOfCell) {
                     vittoria(numberOfCell);
@@ -82,8 +84,6 @@ function generaGriglia(punteggio, numberOfBombs) {
             }
         });
     }
-
-    
 }
 
 /**
