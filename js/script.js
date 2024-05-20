@@ -19,6 +19,13 @@ playButton.addEventListener('click', function(){
     generaGriglia(punteggio, numberOfBombs, scoreEl);
 });
 
+/**
+ * Generate a grid with a numberOfCell chosen by the difficulty, with a "punteggio" and a "el" to update and show the score, and a number of bombs that it generate in the grid
+ * 
+ * @param {*} punteggio 
+ * @param {*} numberOfBombs 
+ * @param {*} el 
+ */
 function generaGriglia(punteggio, numberOfBombs, el) {
 
     // definisco difficolta
