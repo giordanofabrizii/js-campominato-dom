@@ -1,19 +1,21 @@
 const campoContainerEl = document.getElementById("campo-container");
 
+let punteggio = 0
+
 const playButton = document.getElementById("start-game");
 playButton.addEventListener('click', function(){
     // prima svuoto il container
     campoContainerEl.innerHTML = ''
 
     // reset del punteggio
-    let punteggio = 0;
+    punteggio = 0;
     let alredychecked = [];
 
     // definisco numero di bombe
     const numberOfBombs = 16;
 
     // genero la griglia
-    generaGriglia(punteggio, numberOfBombs, alredychecked);
+    generaGriglia(numberOfBombs, alredychecked);
 });
 
 /**
@@ -24,7 +26,7 @@ playButton.addEventListener('click', function(){
  * @param {*} el 
  * @param {*} list
  */
-function generaGriglia(punteggio, numberOfBombs, list) {
+function generaGriglia(numberOfBombs, list) {
 
     // definisco difficolta
     let difficultyChoiceEl = document.getElementById("difficulty-choice")
@@ -86,14 +88,18 @@ function generaGriglia(punteggio, numberOfBombs, list) {
                 // controllo se era l'ultima casella
                 punteggio += 1;
 
+                let scoreEl = document.getElementById("score");
+                // scoreEl.innerHTML = punteggio;
+
                 if ((punteggio + numberOfBombs) == numberOfCell) {
                     vittoria();
                     return
                 }
 
                 // controllo cosa posso sbloccare
-                console.log(i)
                 sbloccaAdiacenti(cells, i, numberOfCell, list);
+
+                scoreEl.innerHTML = punteggio;
             }
         });
     }
@@ -191,14 +197,16 @@ function sbloccaAdiacenti(list, int, num, checked) {
                 elemToChecked = list[indexOfChecked];
 
                 if (!(rowChecked < 0 || rowChecked >= Math.sqrt(num) || colChecked < 0 || colChecked >= Math.sqrt(num) || checked.includes(elemToChecked))) {
-                    console.log(elemToChecked.childNodes[0])
+
+                    punteggio += 1;
+
                     if (["1","2","3","4","5","6","7","8"].includes(elemToChecked.childNodes[0].childNodes[0].innerHTML) == 1) {
                         elemToChecked.classList.add('active', 'unclickable');
                         checked.push(elemToChecked);
                     } else if (["0", 0].includes(elemToChecked.childNodes[0].childNodes[0].innerHTML) == 1) {
                         elemToChecked.classList.add('active', 'unclickable');
                         checked.push(elemToChecked);
-                        sbloccaAdiacenti(list, indexOfChecked + 1, num, checked);
+                        sbloccaAdiacenti(list, indexOfChecked + 1, num, checked, punteggio);
                     } 
                 }
             }
