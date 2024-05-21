@@ -76,11 +76,11 @@ function generaGriglia(numberOfBombs, list) {
 
 
         article.addEventListener('click', function(){
+            if (article.getElementsByTagName("span").length > 1) {
+                article.removeChild(article.getElementsByTagName("span")[1]);
+            }
             // devo verificare che non sia gia cliccata
             if (article.classList.contains("unclickable") == 0) {
-                if (article.getElementsByTagName("span").length > 1) {
-                    article.removeChild(article.getElementsByTagName("span")[1]);
-                }
                 article.classList.add("active");
                 article.classList.add("unclickable");
 
