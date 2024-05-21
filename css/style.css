@@ -55,6 +55,7 @@ main {
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
 }
 
 .cella > *{
@@ -86,6 +87,16 @@ main {
     height: 100%;
     width: 100%;
     background-image: url(../img/bomb.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+span.flag {
+    position: absolute;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    display: block;
+    background-image: url(../img/flag.jpg);
     background-repeat: no-repeat;
     background-size: cover;
 }

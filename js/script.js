@@ -1,5 +1,7 @@
 const campoContainerEl = document.getElementById("campo-container");
 
+window.addEventListener("contextmenu", e => e.preventDefault());
+
 let punteggio = 0
 
 const playButton = document.getElementById("start-game");
@@ -76,6 +78,9 @@ function generaGriglia(numberOfBombs, list) {
         article.addEventListener('click', function(){
             // devo verificare che non sia gia cliccata
             if (article.classList.contains("unclickable") == 0) {
+                if (article.getElementsByTagName("span").length > 1) {
+                    article.removeChild(article.getElementsByTagName("span")[1]);
+                }
                 article.classList.add("active");
                 article.classList.add("unclickable");
 
@@ -102,6 +107,10 @@ function generaGriglia(numberOfBombs, list) {
                 scoreEl.innerHTML = punteggio;
             }
         });
+
+        article.addEventListener('contextmenu', function() {
+            addFlag(article);
+        })
     }
 
     // prendo una lista di tutti gli elementi "cella"
@@ -183,6 +192,11 @@ function sbloccaAdiacenti(list, int, num, checked) {
     let row = Math.floor(indexOfElement / Math.sqrt(num)); // in a grid it rapresent the row number of the element
     let col = indexOfElement % Math.sqrt(num) ; // in a grid it rapresent the col number of the element
 
+    // elimino la flag se presente
+    if (list[indexOfElement].getElementsByTagName("span").length > 1) {
+        list[indexOfElement].removeChild(list[indexOfElement].getElementsByTagName("span")[1]);
+    }
+
     let content = list[indexOfElement].childNodes[0].childNodes[0].innerHTML;
 
     if (content == 0) { // se non ho cliccato su un numero, verifica quelli adiacenti
@@ -243,5 +257,16 @@ function eliminaClicks(){
     for (let i = 0; i < cells.length; i++) {
         // aggiungo classe unlcickable a tutti gli elementi
         cells[i].classList.add("unclickable")
+    }
+}
+
+function addFlag(elem) {
+    if (elem.getElementsByTagName("span").length <= 1) {
+        span = document.createElement("span");
+        span.classList.add("flag");
+    
+        elem.appendChild(span);
+    } else {
+        elem.removeChild(elem.getElementsByTagName("span")[1]);
     }
 }
